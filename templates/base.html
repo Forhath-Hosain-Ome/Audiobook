@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'public/css/bootstrap.min.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'public/css/base.css' %}">
 
     <link rel="stylesheet" href="{% static 'public/css/detailsStyle.css' %}">
     <link rel="stylesheet" href="{% static 'public/css/footerStyle.css' %}">
@@ -19,107 +21,7 @@
         {% include 'includes/navbar.html' %}
     
         {% include 'includes/header.html' %}
-        <!-- <div class="container">
-        <div class="main-content">
-            <div class="upload-section">
-                <h2>Upload PDF</h2>
-                
-                <div class="step-indicator">
-                    <div class="step completed">1</div>
-                    <div class="step active">2</div>
-                    <div class="step">3</div>
-                </div>
-                
-                <div class="drop-area" id="dropArea">
-                    <i class="fas fa-file-pdf"></i>
-                    <p class="drop-text">Drag & drop your PDF file here</p>
-                    <p>or</p>
-                    <button class="btn">Browse Files</button>
-                    <input type="file" class="file-input" accept=".pdf" id="fileInput">
-                </div>
-                
-                <div class="selected-file">
-                    <p id="fileName">No file selected</p>
-                </div>
-                
-                <button class="btn process-btn">Process PDF</button>
-                
-                <div class="progress-area">
-                    <div class="progress-bar">
-                        <div class="progress" id="progressBar"></div>
-                    </div>
-                    <p class="status" id="statusText">Ready to process</p>
-                </div>
-            </div>
-            
-            <div class="audio-section">
-                <h2>Generated Audio</h2>
-                
-                <div class="audio-player">
-                    <p>Your audio will appear here after processing</p>
-                    <div class="audio-controls" style="display: none;" id="audioControls">
-                        <audio controls id="audioPlayer"></audio>
-                        <button class="btn"><i class="fas fa-download"></i> Download</button>
-                    </div>
-                </div>
-                
-                <p class="audio-name" id="audioName"></p>
-                
-                <div class="additional-options">
-                    <h3>Options</h3>
-                    <div class="option">
-                        <label for="voiceSelect">Voice Type:</label>
-                        <select id="voiceSelect">
-                            <option>Male Voice</option>
-                            <option>Female Voice</option>
-                            <option>Natural Voice</option>
-                        </select>
-                    </div>
-                    <div class="option">
-                        <label for="speedSelect">Speed:</label>
-                        <select id="speedSelect">
-                            <option>Slow</option>
-                            <option selected>Normal</option>
-                            <option>Fast</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
         
-        <div class="history-section">
-            <h2>Recent Conversions</h2>
-            <div class="history-list">
-                <div class="history-item">
-                    <div class="history-name">AnnualReport2023.pdf</div>
-                    <div class="history-date">Aug 15, 2023</div>
-                    <div class="history-actions">
-                        <button title="Play"><i class="fas fa-play"></i></button>
-                        <button title="Download"><i class="fas fa-download"></i></button>
-                        <button title="Delete"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-name">ResearchPaper.pdf</div>
-                    <div class="history-date">Aug 10, 2023</div>
-                    <div class="history-actions">
-                        <button title="Play"><i class="fas fa-play"></i></button>
-                        <button title="Download"><i class="fas fa-download"></i></button>
-                        <button title="Delete"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-name">ShortStory.pdf</div>
-                    <div class="history-date">Aug 5, 2023</div>
-                    <div class="history-actions">
-                        <button title="Play"><i class="fas fa-play"></i></button>
-                        <button title="Download"><i class="fas fa-download"></i></button>
-                        <button title="Delete"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div> -->
         {% block content %}
         {% endblock %}
 
@@ -127,11 +29,11 @@
 
     {% include 'includes/footer.html' %}
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'public/js/bootstrap.bundle.min.js' %}"></script>
 
-    <script src="{% static 'js/detailsScript.js' %}"></script>
-    <script src="{% static 'js/footerScript.js' %}"></script>
-    <script src="{% static 'js/navScript.js' %}"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'public/js/detailsScript.js' %}"></script>
+    <script src="{% static 'public/js/footerScript.js' %}"></script>
+    <script src="{% static 'public/js/navScript.js' %}"></script>
+    <script src="{% static 'public/js/script.js' %}"></script>
 </body>
 </html>

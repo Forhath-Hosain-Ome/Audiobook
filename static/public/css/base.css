@@ -1,4 +1,10 @@
 :root {
+    --gradient-light-start: #6e8efb;
+    --gradient-light-end: #a777e3;
+    --gradient-dark-start: #2c3e50;
+    --gradient-dark-end: #4ca1af;
+
+
     --primary: #79aec8;
     --secondary: #417690;
     --accent: #f5dd5d;
@@ -91,4 +97,13 @@ html, body {
     padding: 0;
     box-sizing: border-box;
     font-family: var(--font-family-primary);
+}
+body {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: #333;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
