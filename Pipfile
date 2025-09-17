@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 pillow = "*"
+pdfminer = "*"
+django = "*"
+"pdfminer.six" = "*"
+gtts = "*"
+pydub = "*"
 
 [dev-packages]
 

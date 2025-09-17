@@ -6,9 +6,14 @@
     <title>Document</title>
 </head>
 <body>
+    {% include 'includes/navbar.html' %}
     <p>hello</p>
     {% block content %}
     {% endblock %}
 
+    {% include 'reader/detail.html' %}
+    {% include 'reader/upload.html' %}
+
+    {% include 'includes/footer.html' %}
 </body>
 </html>

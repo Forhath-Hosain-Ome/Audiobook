@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import document_detail
+from .views import document_detail, home
 
 urlpatterns = [
-    path('', document_detail, name='home'),
+    path('/details/<pk>', document_detail, name='detail'),
+    path('', home, name = 'home')
 ]
