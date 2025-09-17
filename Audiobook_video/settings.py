@@ -7,6 +7,9 @@ SECRET_KEY = 'django-insecure-l6s)zted!__!_yw&@r*dwqht6impv2=&dp5%%3x-)xa+sb$dx(
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "Audiobook.local"]
+CSRF_COOKIE_DOMAIN = "http://audiobook.local"
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://localhost", "http://audiobook.local"]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

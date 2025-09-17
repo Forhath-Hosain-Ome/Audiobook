@@ -1,5 +1,6 @@
-{% include '../base.html' %}
+{% extends '../base.html' %}
 
 {% block content %}
-    <p>hello</p>
+    {% include '../includes/details.html' %}
+    {% include '../reader/upload.html' %}
 {% endblock %}

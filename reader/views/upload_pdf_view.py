@@ -29,4 +29,4 @@ def upload_pdf(request):
             return redirect('document_detail', pk=doc.pk)
     else:
         form = DocumentForm()
-    return render(request, "reader/upload.html", {"form": form})
+    return render(request, "reader/upload.html", {"form": form, "errors": form.errors})
