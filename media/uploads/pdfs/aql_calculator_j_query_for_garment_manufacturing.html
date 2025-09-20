@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AQL Calculator – Garment Manufacturing (HRCHR)</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%232f6ee5'/%3E%3Ctext x='50' y='60' font-size='48' text-anchor='middle' fill='white' font-family='Arial, sans-serif'%3EH%3C/text%3E%3C/svg%3E"/>
+  <style>
+    :root{--bg:#0b1220;--panel:#101a2b;--muted:#7b8aa7;--accent:#4fa3ff;--ok:#22c55e;--bad:#ef4444;--text:#e8eefb;--border:#1f2b44;--input:#0d1526}
+    .light{--bg:#f7f9fc;--panel:#ffffff;--muted:#5b6b86;--accent:#215bff;--ok:#12894a;--bad:#d02c2c;--text:#0e1726;--border:#e6ecf6;--input:#f1f5fd}
+    *{box-sizing:border-box}
+    body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:var(--text);background:linear-gradient(180deg,var(--bg),var(--bg));}
+    .wrap{max-width:1100px;margin:28px auto;padding:0 16px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:36px;width:auto;border-radius:8px;border:1px solid var(--border);background:#fff}
+    h1{font-size:20px;margin:0}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+    .grid{display:grid;gap:14px}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+    input[type=number], select, input[type=url]{width:100%;padding:10px 12px;border-radius:10px;background:var(--input);border:1px solid var(--border);color:var(--text)}
+    .hint{color:var(--muted);font-size:12px}
+    .pill{padding:6px 10px;border:1px solid var(--border);border-radius:999px;font-size:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;border:1px solid var(--border)}
+    th,td{padding:10px 12px;text-align:left}
+    thead th{background:color-mix(in oklab, var(--panel) 80%, black 10%);color:var(--text);font-weight:600;border-bottom:1px solid var(--border)}
+    tbody tr:nth-child(odd){background:color-mix(in oklab, var(--panel) 92%, black 6%)}
+    tbody tr:nth-child(even){background:var(--panel)}
+    .kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .kpi>div{background:color-mix(in oklab, var(--panel) 85%, black 5%);border:1px solid var(--border);border-radius:12px;padding:12px}
+    .stat{display:flex;gap:8px;align-items:center}
+    .stat .value{font-size:22px;font-weight:800}
+    .pass{color:var(--ok)}.fail{color:var(--bad)}.muted{color:var(--muted)}
+    .btn{background:var(--accent);color:#fff;font-weight:700;padding:10px 14px;border:none;border-radius:10px;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .spacer{flex:1}
+    .footer{margin-top:16px;color:var(--muted);font-size:12px}
+    @media (max-width:880px){.grid.cols-3{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}.kpi{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img id="logo" alt="HRCHR Logo" src="https://dummyimage.com/120x36/ffffff/000000.png&text=HRCHR"/>
+        <div>
+          <h1>AQL Calculator – Garments (ISO 2859‑1 / ANSI Z1.4)</h1>
+          <div class="pill">Single Sampling • Normal • G-Levels</div>
+        </div>
+      </div>
+      <div class="row">
+        <button id="themeToggle" class="btn ghost" title="Toggle light/dark">Toggle Theme</button>
+        <button id="btnPrint" class="btn ghost">Print</button>
+        <button id="btnDownload" class="btn">Download .html</button>
+      </div>
+    </header>
+
+    <div class="card grid cols-3" id="inputs">
+      <div>
+        <label for="lotSize">Lot / Batch Size</label>
+        <input type="number" id="lotSize" min="2" step="1" placeholder="e.g. 3500" />
+        <div class="hint">Total units in the shipment / PO line.</div>
+      </div>
+      <div>
+        <label for="level">Inspection Level</label>
+        <select id="level">
+          <option value="GI">General I (GI)</option>
+          <option value="GII" selected>General II (GII)</option>
+          <option value="GIII">General III (GIII)</option>
+          <option value="S1">Special S1</option>
+          <option value="S2">Special S2</option>
+          <option value="S3">Special S3</option>
+          <option value="S4">Special S4</option>
+        </select>
+        <div class="hint">GII is standard for most garment inspections.</div>
+      </div>
+      <div>
+        <label for="aqls">AQLs (Critical / Major / Minor)</label>
+        <div class="row">
+          <select id="aqlCritical">
+            <option value="NA" selected>Not Allowed</option>
+            <option>0.065</option><option>0.10</option><option>0.15</option><option>0.25</option>
+            <option>0.40</option><option>0.65</option><option>1.0</option><option>1.5</option>
+            <option>2.5</option><option>4.0</option><option>6.5</option>
+          </select>
+          <select id="aqlMajor">
+            <option>0.65</option><option>1.0</option><option>1.5</option><option selected>2.5</option>
+            <option>4.0</option><option>6.5</option>
+          </select>
+          <select id="aqlMinor">
+            <option>0.65</option><option>1.0</option><option>1.5</option>
+            <option selected>2.5</option><option selected>4.0</option><option>6.5</option>
+          </select>
+        </div>
+        <div class="hint">Typical policy: Critical not allowed; Major 2.5; Minor 4.0.</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="kpi">
+        <div class="stat"><div class="muted">Code Letter</div><div class="value" id="code">–</div></div>
+        <div class="stat"><div class="muted">Sample Size</div><div class="value" id="sample">–</div></div>
+        <div class="stat"><div class="muted">Unit Sampled %</div><div class="value" id="pct">–</div></div>
+        <div class="stat"><div class="muted">Decision</div><div class="value" id="decision">–</div></div>
+      </div>
+    </div>
+
+    <div class="card grid cols-2" style="margin-top:14px">
+      <div>
+        <h3 style="margin:0 0 10px 0;font-size:15px">Enter Found Defects (sample)</h3>
+        <div class="grid cols-3">
+          <div>
+            <label>Critical</label>
+            <input type="number" id="defCrit" min="0" step="1" value="0" />
+          </div>
+          <div>
+            <label>Major</label>
+            <input type="number" id="defMaj" min="0" step="1" value="0" />
+          </div>
+          <div>
+            <label>Minor</label>
+            <input type="number" id="defMin" min="0" step="1" value="0" />
+          </div>
+        </div>
+        <div class="footer">Set to 0 if not applicable. Decision updates live.</div>
+      </div>
+      <div>
+        <h3 style="margin:0 0 10px 0;font-size:15px">Accept/Reject Thresholds</h3>
+        <table>
+          <thead>
+            <tr><th>Class</th><th>AQL</th><th>Accept</th><th>Reject</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Critical</td><td id="aqlC">–</td><td id="acC">–</td><td id="reC">–</td></tr>
+            <tr><td>Major</td><td id="aqlM">–</td><td id="acM">–</td><td id="reM">–</td></tr>
+            <tr><td>Minor</td><td id="aqlm">–</td><td id="acm">–</td><td id="rem">–</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3 style="margin:0 0 10px 0;font-size:15px">Branding</h3>
+      <div class="grid cols-2">
+        <div>
+          <label for="logoUrl">Logo URL</label>
+          <input type="url" id="logoUrl" placeholder="https://.../your_logo.png"/>
+          <div class="hint">Paste a public image URL. Saved locally in your browser.</div>
+        </div>
+        <div>
+          <label>Preview</label>
+          <div class="row" style="align-items:center">
+            <img id="logoPreview" style="height:36px;border-radius:8px;border:1px solid var(--border);background:#fff" alt="logo preview"/>
+            <button id="saveBrand" class="btn">Save</button>
+            <button id="clearBrand" class="btn ghost">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© <span id="year"></span> HRCHR • ISO 2859‑1 / ANSI Z1.4 (Single Sampling, Normal). This tool does not implement tightened/reduced switching rules or double sampling.</div>
+  </div>
+
+  <script>
+    // ---- TABLE I: Lot size -> Code letter per inspection level ----
+    const CODE_LETTER_TABLE = [
+      { min:2, max:8,    GI:'A', GII:'A', GIII:'A', S1:'A', S2:'A', S3:'A', S4:'A' },
+      { min:9, max:15,   GI:'B', GII:'B', GIII:'B', S1:'A', S2:'A', S3:'A', S4:'B' },
+      { min:16, max:25,  GI:'C', GII:'C', GIII:'C', S1:'A', S2:'B', S3:'B', S4:'C' },
+      { min:26, max:50,  GI:'D', GII:'D', GIII:'E', S1:'B', S2:'B', S3:'C', S4:'D' },
+      { min:51, max:90,  GI:'E', GII:'E', GIII:'F', S1:'B', S2:'C', S3:'D', S4:'E' },
+      { min:91, max:150, GI:'F', GII:'F', GIII:'G', S1:'C', S2:'C', S3:'E', S4:'F' },
+      { min:151, max:280,GI:'G', GII:'G', GIII:'H', S1:'C', S2:'D', S3:'F', S4:'G' },
+      { min:281, max:500,GI:'H', GII:'H', GIII:'J', S1:'D', S2:'D', S3:'G', S4:'H' },
+      { min:501, max:1200,GI:'J', GII:'J', GIII:'K', S1:'D', S2:'E', S3:'H', S4:'J' },
+      { min:1201, max:3200,GI:'K', GII:'K', GIII:'L', S1:'E', S2:'F', S3:'J', S4:'K' },
+      { min:3201, max:10000,GI:'L', GII:'L', GIII:'M', S1:'F', S2:'G', S3:'K', S4:'L' },
+      { min:10001, max:35000,GI:'M', GII:'M', GIII:'N', S1:'G', S2:'G', S3:'L', S4:'M' },
+      { min:35001, max:150000,GI:'N', GII:'N', GIII:'P', S1:'H', S2:'J', S3:'M', S4:'N' },
+      { min:150001, max:500000,GI:'P', GII:'P', GIII:'Q', S1:'J', S2:'K', S3:'N', S4:'P' },
+      { min:500001, max:Number.MAX_SAFE_INTEGER, GI:'Q', GII:'Q', GIII:'R', S1:'K', S2:'L', S3:'P', S4:'Q' }
+    ];
+
+    // ---- Sample size for each code letter ----
+    const SAMPLE_SIZE_BY_CODE = { A:2, B:3, C:5, D:8, E:13, F:20, G:32, H:50, J:80, K:125, L:200, M:315, N:500, P:800, Q:1250, R:2000 };
+
+    // ---- Acceptance numbers (Ac/Re) table for common AQLs (single, normal) ----
+    const AQL_TABLE = {
+      2:   { '0.65': {ac:0,re:1}, '1.0': {ac:0,re:1}, '1.5': {ac:0,re:1}, '2.5': {ac:0,re:1}, '4.0': {ac:1,re:2}, '6.5': {ac:1,re:2} },
+      3:   { '0.65': {ac:0,re:1}, '1.0': {ac:0,re:1}, '1.5': {ac:0,re:1}, '2.5': {ac:0,re:1}, '4.0': {ac:1,re:2}, '6.5': {ac:1,re:2} },
+      5:   { '0.65': {ac:0,re:1}, '1.0': {ac:0,re:1}, '1.5': {ac:0,re:1}, '2.5': {ac:0,re:1}, '4.0': {ac:1,re:2}, '6.5': {ac:2,re:3} },
+      8:   { '0.65': {ac:0,re:1}, '1.0': {ac:1,re:2}, '1.5': {ac:1,re:2}, '2.5': {ac:1,re:2}, '4.0': {ac:2,re:3}, '6.5': {ac:3,re:4} },
+      13:  { '0.65': {ac:1,re:2}, '1.0': {ac:1,re:2}, '1.5': {ac:1,re:2}, '2.5': {ac:1,re:2}, '4.0': {ac:3,re:4}, '6.5': {ac:5,re:6} },
+      20:  { '0.65': {ac:1,re:2}, '1.0': {ac:2,re:3}, '1.5': {ac:2,re:3}, '2.5': {ac:1,re:2}, '4.0': {ac:3,re:4}, '6.5': {ac:5,re:6} },
+      32:  { '0.65': {ac:2,re:3}, '1.0': {ac:3,re:4}, '1.5': {ac:3,re:4}, '2.5': {ac:2,re:3}, '4.0': {ac:5,re:6}, '6.5': {ac:7,re:8} },
+      50:  { '0.65': {ac:3,re:4}, '1.0': {ac:5,re:6}, '1.5': {ac:5,re:6}, '2.5': {ac:3,re:4}, '4.0': {ac:7,re:8}, '6.5': {ac:10,re:11} },
+      80:  { '0.65': {ac:5,re:6}, '1.0': {ac:7,re:8}, '1.5': {ac:7,re:8}, '2.5': {ac:5,re:6}, '4.0': {ac:10,re:11}, '6.5': {ac:14,re:15} },
+      125: { '0.65': {ac:7,re:8}, '1.0': {ac:10,re:11}, '1.5': {ac:10,re:11}, '2.5': {ac:7,re:8}, '4.0': {ac:14,re:15}, '6.5': {ac:21,re:22} },
+      200: { '0.65': {ac:10,re:11}, '1.0': {ac:14,re:15}, '1.5': {ac:14,re:15}, '2.5': {ac:10,re:11}, '4.0': {ac:21,re:22}, '6.5': {ac:30,re:31} },
+      315: { '0.65': {ac:14,re:15}, '1.0': {ac:21,re:22}, '1.5': {ac:21,re:22}, '2.5': {ac:14,re:15}, '4.0': {ac:30,re:31}, '6.5': {ac:44,re:45} },
+      500: { '0.65': {ac:21,re:22}, '1.0': {ac:21,re:22}, '1.5': {ac:30,re:31}, '2.5': {ac:21,re:22}, '4.0': {ac:44,re:45}, '6.5': {ac:65,re:66} },
+      800: { '0.65': {ac:30,re:31}, '1.0': {ac:30,re:31}, '1.5': {ac:44,re:45}, '2.5': {ac:30,re:31}, '4.0': {ac:65,re:66}, '6.5': {ac:95,re:96} },
+      1250:{ '0.65': {ac:44,re:45}, '1.0': {ac:44,re:45}, '1.5': {ac:65,re:66}, '2.5': {ac:44,re:45}, '4.0': {ac:95,re:96}, '6.5': {ac:145,re:146} },
+      2000:{ '0.65': {ac:65,re:66}, '1.0': {ac:65,re:66}, '1.5': {ac:95,re:96}, '2.5': {ac:73,re:74}, '4.0': {ac:145,re:146}, '6.5': {ac:230,re:231} }
+    };
+
+    // --- Helpers ---
+    function getCodeLetter(lotSize, level){ const row = CODE_LETTER_TABLE.find(r=>lotSize>=r.min && lotSize<=r.max); return row?row[level]:null; }
+    function getAcRe(sampleSize, aql){ const t=AQL_TABLE[sampleSize]; return t? (t[aql]||null):null; }
+
+    function compute(){
+      const lot = parseInt($("#lotSize").val(),10);
+      const level = $("#level").val();
+      if(!lot || lot<2){ renderEmpty(); return; }
+      const code = getCodeLetter(lot, level);
+      const sample = SAMPLE_SIZE_BY_CODE[code]||0;
+      $("#code").text(code||'–');
+      $("#sample").text(sample||'–');
+      $("#pct").text(sample&&lot?((sample/lot*100).toFixed(1)+'%'):'–');
+
+      const aqlC=$("#aqlCritical").val();
+      const aqlMaj=$("#aqlMajor").val();
+      const aqlMin=$("#aqlMinor").val();
+
+      const rowC=aqlC==='NA'?{ac:0,re:0}:(getAcRe(sample,aqlC)||{ac:'–',re:'–'});
+      const rowM=getAcRe(sample,aqlMaj)||{ac:'–',re:'–'};
+      const rowm=getAcRe(sample,aqlMin)||{ac:'–',re:'–'};
+
+      $("#aqlC").text(aqlC==='NA'?'Not Allowed':aqlC);
+      $("#aqlM").text(aqlMaj); $("#aqlm").text(aqlMin);
+      $("#acC").text(rowC.ac); $("#reC").text(rowC.re);
+      $("#acM").text(rowM.ac); $("#reM").text(rowM.re);
+      $("#acm").text(rowm.ac); $("#rem").text(rowm.re);
+
+      const dC=parseInt($("#defCrit").val(),10)||0;
+      const dM=parseInt($("#defMaj").val(),10)||0;
+      const dm=parseInt($("#defMin").val(),10)||0;
+
+      let status='Pending';
+      if(sample>0){
+        const failC=(aqlC==='NA' && dC>0) || (aqlC!=='NA' && typeof rowC.re==='number' && dC>=rowC.re);
+        const failM=(typeof rowM.re==='number' && dM>=rowM.re);
+        const failm=(typeof rowm.re==='number' && dm>=rowm.re);
+        status=(failC||failM||failm)?'REJECT':'ACCEPT';
+      }
+      $("#decision").text(status).removeClass('pass fail').addClass(status==='ACCEPT'?'pass':'fail');
+    }
+
+    function renderEmpty(){
+      $("#code,#sample,#pct").text('–');
+      $("#aqlC,#aqlM,#aqlm,#acC,#acM,#acm,#reC,#reM,#rem").text('–');
+      $("#decision").text('–').removeClass('pass fail');
+    }
+
+    // --- UX: theme toggle, branding, download, print ---
+    function applyTheme(){ const t=localStorage.getItem('aql_theme')||'dark'; document.documentElement.classList.toggle('light', t==='light'); }
+    function toggleTheme(){ const cur=document.documentElement.classList.contains('light')?'light':'dark'; const next=cur==='light'?'dark':'light'; localStorage.setItem('aql_theme', next); applyTheme(); }
+
+    function loadBrand(){
+      const url=localStorage.getItem('aql_logo_url');
+      if(url){ $('#logo').attr('src', url); $('#logoPreview').attr('src', url); $('#logoUrl').val(url); }
+      else { $('#logoPreview').attr('src', $('#logo').attr('src')); }
+    }
+
+    function saveBrand(){ const url=$('#logoUrl').val(); if(url){ localStorage.setItem('aql_logo_url', url); loadBrand(); } }
+    function clearBrand(){ localStorage.removeItem('aql_logo_url'); $('#logoUrl').val(''); loadBrand(); }
+
+    function downloadHtml(){
+      const blob=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='aql-calculator.html'; a.click(); URL.revokeObjectURL(a.href);
+    }
+
+    $(document).on('input change', '#inputs input, #inputs select, #defCrit, #defMaj, #defMin, #aqlCritical, #aqlMajor, #aqlMinor', compute);
+    $('#themeToggle').on('click', toggleTheme);
+    $('#btnDownload').on('click', downloadHtml);
+    $('#btnPrint').on('click', () => window.print());
+    $('#saveBrand').on('click', saveBrand);
+    $('#clearBrand').on('click', clearBrand);
+
+    $(function(){ applyTheme(); loadBrand(); $('#year').text(new Date().getFullYear()); });
+  </script>
+</body>
+</html>

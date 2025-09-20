@@ -1,14 +1,15 @@
 :root {
-    --gradient-light-start: #6e8efb;
-    --gradient-light-end: #a777e3;
-    --gradient-dark-start: #2c3e50;
-    --gradient-dark-end: #4ca1af;
+    --color-opacity:1;
 
+    --gradient-light-start: 110, 142, 251;
+    --gradient-light-end: 167, 119, 227;
+    --gradient-dark-start: 44, 62, 80;
+    --gradient-dark-end: 77, 163, 176;
 
-    --primary: #79aec8;
+    --primary: 121, 174, 200;
     --secondary: #417690;
     --accent: #f5dd5d;
-    --primary-fg: #fff;
+    --primary-fg: 255, 255, 255;
 
     --body-fg: #333;
     --body-bg: #fff;
@@ -102,8 +103,15 @@ body {
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     color: #333;
     min-height: 100vh;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.container {
+    width: 100%;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+    --bs-gutter-x: 0;
 }
