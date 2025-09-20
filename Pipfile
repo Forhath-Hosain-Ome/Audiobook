@@ -10,6 +10,7 @@ django = "*"
 "pdfminer.six" = "*"
 gtts = "*"
 pydub = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

@@ -4,4 +4,4 @@ from reader.models import Document
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ['title', 'pdf']
+        fields = ['title', 'pdf', 'img']

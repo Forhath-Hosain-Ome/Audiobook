@@ -1,3 +1,7 @@
+{% extends '../base.html' %}
+{% block content %}
+    {% include '../includes/details.html' %}
+{% endblock %}
 <h1>{{ doc.title }}</h1>
 <p>Uploaded: {{ doc.created_at }}</p>
 
@@ -9,3 +13,11 @@
   <audio controls src="{{ doc.audio_file.url }}"></audio>
   <p><a href="{{ doc.audio_file.url }}">Download audio</a></p>
 {% endif %}
+<h1>All Documents</h1>
+<ul>
+  {% for doc in docs %}
+    <li>{{ doc.title }} - <a href="{{ doc.file.url }}">Download</a></li>
+  {% empty %}
+    <li>No documents found.</li>
+  {% endfor %}
+</ul>
