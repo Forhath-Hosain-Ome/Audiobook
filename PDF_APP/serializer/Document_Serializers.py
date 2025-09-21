@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from reader.models import Document
+from PDF_APP.models import PdfModel
 
 class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Document
+        model = PdfModel
         fields = ['id', 'title', 'pdf', 'extracted_text', 'audio_file']
         read_only_fields = ['extracted_text', 'audio_file']

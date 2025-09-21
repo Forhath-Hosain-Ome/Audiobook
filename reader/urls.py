@@ -6,7 +6,7 @@ from .views import *
 # router.register(r'documents', DocumentViewSet, basename='document')
 
 urlpatterns = [
-    path('', home, name = 'home'),
+    # path('', home, name = 'home'),
     # path('documents/', ViewPDF, name='documents'),
     # path('document_detail/<pk>', view_document, name='document_detail'),
     # path('upload-pdf', upload_document, name='upload_document'),

@@ -1,18 +1,7 @@
-from reader.models import Document
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from reader.serializer import DocumentSerializer
+from PDF_APP.models import PdfModel
+from rest_framework import generics, permissions
+from PDF_APP.serializer import DocumentSerializer
 
-class DocumentListCreate(APIView):
-    def get(self, request):
-        docs = Document.objects.all()
-        serializer = DocumentSerializer(docs, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = DocumentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class DocumentListCreate(generics.ListCreateAPIView):
+    queryset = PdfModel.objects.all()
+    serializer_class = DocumentSerializer

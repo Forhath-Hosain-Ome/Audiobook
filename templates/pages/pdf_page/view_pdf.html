@@ -1,0 +1,17 @@
+{% extends '../../base.html' %}
+
+{% block content %}
+    <h1>All PDFs</h1>
+    <a href="{% url 'upload_pdf' %}">Upload New PDF</a>
+    <ul>
+    {% for pdf in pdfs %}
+        <li>
+        <a href="{{ pdf.file.url }}" target="_blank">{{ pdf.title }}</a>
+        | <a href="">Edit</a>
+        | <a href="">Delete</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+
