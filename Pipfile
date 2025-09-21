@@ -11,10 +11,9 @@ django = "*"
 gtts = "*"
 pydub = "*"
 djangorestframework = "*"
-
 djangorestframework-simplejwt = {extras = ["crypto"], version = "*"}
-
-
+redis = "*"
+celery = {extras = ["redis"], version = "*"}
 
 [dev-packages]
 

@@ -13,10 +13,10 @@ class PdfModel(BaseModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # if self.file:
-        #     try:
-        #         text = extract_text(self.file.path)
-        #         self.extracted_text = text
-        #         super().save(update_fields=['extracted_text'])
-        #     except Exception as e:
-        #         print(f"Text extraction failed: {e}")
+        if self.file:
+            try:
+                text = extract_text(self.file.path)
+                self.extracted_text = text
+                super().save(update_fields=['extracted_text'])
+            except Exception as e:
+                print(f"Text extraction failed: {e}")

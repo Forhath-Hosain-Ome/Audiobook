@@ -1,0 +1,1 @@
+from .process_pdf_task import process_pdf
