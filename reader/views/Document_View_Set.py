@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from reader.models import DocumentModel
+from reader.models import Document
+from rest_framework import serializers
 from reader.Serializer import DocumentSerializer
 from reader.utils import extract_text_from_pdf
 from reader.utils import generate_tts_gtts
@@ -9,7 +10,7 @@ from django.core.files import File
 import os
 
 class DocumentViewSet(viewsets.ModelViewSet):
-    queryset = DocumentModel.objects.all().order_by('-uploaded_at')
+    queryset = Document.objects.all().order_by('-uploaded_at')
     serializer_class = DocumentSerializer
 
     def perform_create(self, serializer):
@@ -17,7 +18,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
         try:
             # 1️⃣ Extract text
-            text = extract_text(doc.pdf.path)
+            text = extract_text_from_pdf(doc.pdf.path)
             doc.extracted_text = text
             doc.save(update_fields=['extracted_text'])
 
@@ -42,7 +43,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
         if 'pdf' in self.request.FILES:
             try:
-                text = extract_text(doc.pdf.path)
+                text = extract_text_from_pdf(doc.pdf.path)
                 doc.extracted_text = text
                 doc.save(update_fields=['extracted_text'])
 
