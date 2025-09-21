@@ -1,5 +1,4 @@
 from django.shortcuts import render
 
-
-def home(request):
+def PdfView(request):
     return render (request,'pages/index.html')

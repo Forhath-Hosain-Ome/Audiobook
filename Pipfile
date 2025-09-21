@@ -11,6 +11,7 @@ django = "*"
 gtts = "*"
 pydub = "*"
 djangorestframework = "*"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "*"}
 
 [dev-packages]
 

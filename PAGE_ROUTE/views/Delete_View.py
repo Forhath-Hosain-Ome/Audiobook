@@ -1,5 +1,4 @@
 from django.shortcuts import render
 
-
-def home(request):
+def DeleteView(request):
     return render (request,'pages/index.html')

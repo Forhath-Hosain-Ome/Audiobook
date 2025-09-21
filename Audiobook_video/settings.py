@@ -18,7 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reader.apps.ReaderConfig',
+    'PDF_APP.apps.PdfAppConfig',
+    'CORE_APP.apps.CoreAppConfig',
     'rest_framework',
 ]
 

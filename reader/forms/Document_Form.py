@@ -1,7 +1,7 @@
 from django import forms
-from reader.models import Document
+# from reader.models import Document
 
 class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Document
+        # model = Document
         fields = ['title', 'pdf', 'img']
