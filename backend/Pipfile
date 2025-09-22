@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 pillow = "*"
-pdfminer = "*"
 django = "*"
 "pdfminer.six" = "*"
 gtts = "*"
@@ -16,6 +15,7 @@ redis = "*"
 celery = {extras = ["redis"], version = "*"}
 flower = "*"
 pymupdf = "*"
+moviepy = "*"
 
 [dev-packages]
 

@@ -1,0 +1,6 @@
+from .DocumentListCreateView import DocumentListCreate
+from .DocumentDetailsView import DocumentDetails
+from .extract_text_view import Extract_Text_View
+from .generate_audio_view import Generate_Audio_View
+from .generate_video_view import Generate_Video_View
+

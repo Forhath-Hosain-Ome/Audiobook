@@ -1,2 +1,0 @@
-from .DocumentListCreateView import DocumentListCreate
-from .DocumentDetailsView import DocumentDetails
