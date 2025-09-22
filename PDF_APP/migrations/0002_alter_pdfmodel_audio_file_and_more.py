@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pdfmodel',
             name='audio_file',
-            field=models.FileField(blank=True, null=True, upload_to=CORE_APP.utility.upload_path.upload_to_audio),
+            field=models.FileField(blank=True, null=True, upload_to=CORE_APP.utility.upload_path.upload_to_dir),
         ),
         migrations.AlterField(
             model_name='pdfmodel',
@@ -24,6 +24,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pdfmodel',
             name='video_file',
-            field=models.FileField(blank=True, null=True, upload_to=CORE_APP.utility.upload_path.upload_to_video),
+            field=models.FileField(blank=True, null=True, upload_to=CORE_APP.utility.upload_path.upload_to_dir),
         ),
     ]
