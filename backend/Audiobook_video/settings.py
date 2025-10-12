@@ -1,4 +1,6 @@
 from pathlib import Path
+from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -6,10 +8,27 @@ SECRET_KEY = 'django-insecure-l6s)zted!__!_yw&@r*dwqht6impv2=&dp5%%3x-)xa+sb$dx(
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "Audiobook.local"]
-CSRF_COOKIE_DOMAIN = "http://audiobook.local"
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://localhost", "http://audiobook.local"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "audiobook.local",
+    ".github.io",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1",
+    "http://localhost",
+    "http://audiobook.local",
+    "https://*.github.io",
+]
+CSRF_COOKIE_DOMAIN = None
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Vite default port
+    "http://127.0.0.1:5173",  # Vite default port
+    "http://audiobook.local",
+    "https://Forhath-Hosain-Ome.github.io",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,9 +42,12 @@ INSTALLED_APPS = [
     'PAGE_ROUTE.apps.PageRouteConfig',
     "rest_framework",
     "rest_framework_simplejwt",
+    'Api_App.apps.ApiAppConfig',
 ]
 
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -39,9 +61,27 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
 }
 
 ROOT_URLCONF = 'Audiobook_video.urls'
+APPEND_SLASH = True
+
 
 TEMPLATES = [
     {
@@ -50,6 +90,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -61,8 +102,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Audiobook_video.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
@@ -91,20 +131,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"

@@ -16,6 +16,8 @@ celery = {extras = ["redis"], version = "*"}
 flower = "*"
 pymupdf = "*"
 moviepy = "*"
+django-cors-headers = "*"
+cryptography = "*"
 
 [dev-packages]
 
