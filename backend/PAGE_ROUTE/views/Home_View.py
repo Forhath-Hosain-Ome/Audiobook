@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, JsonResponse
 
-def HomeView(request : HttpRequest) -> HttpResponse:
-    return HttpResponse('Hello')
+def HomeView(request : HttpRequest) -> JsonResponse:
+    x : JsonResponse = {"message": "Hello Ome, this is from Django backend!"}
+    return JsonResponse(x)

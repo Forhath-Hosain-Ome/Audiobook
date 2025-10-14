@@ -18,6 +18,7 @@ pymupdf = "*"
 moviepy = "*"
 django-cors-headers = "*"
 cryptography = "*"
+pipfile = "*"
 
 [dev-packages]
 

@@ -43,8 +43,15 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     'Api_App.apps.ApiAppConfig',
+    'corsheaders',
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",  # local memory
+        "LOCATION": "unique-snowflake",
+    }
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
